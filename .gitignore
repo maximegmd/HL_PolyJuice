@@ -1,0 +1,4 @@
+build/*
+.xmake/*
+vs20*/
+.vs/
