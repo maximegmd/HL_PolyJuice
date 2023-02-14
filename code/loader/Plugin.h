@@ -17,6 +17,7 @@ struct Plugin
 		TCallback OnPostInitialize = nullptr;
 		TBeginPlay OnBeginPlay = nullptr;
 		TTick OnTick = nullptr;
+		
 	};
 
 	struct PolyjuiceInfo
@@ -28,6 +29,10 @@ struct Plugin
 
 		using TGetExtension = void* (*)(uint32_t aId);
 		TGetExtension GetExtension = nullptr;
+
+		Hogwarts::TToString ToString;
+		FUObjectArray* GUObjectArray;
+		Hogwarts::TFindUObject FindUObject;
 	};
 
 	PluginInfo const* GetInfo() const { return &m_info; };

@@ -37,6 +37,10 @@ void Polyjuice::LoadPlugins()
 {
 	spdlog::info("Loading plugins...");
 
+	m_info.FindUObject = Hogwarts::GFindUObject;
+	m_info.ToString = Hogwarts::GToString;
+	m_info.GUObjectArray = Hogwarts::GUObjectArray;
+
 	auto path = m_paths.GetPolyjuiceRoot();
 	for (auto path : std::filesystem::directory_iterator(path))
 	{

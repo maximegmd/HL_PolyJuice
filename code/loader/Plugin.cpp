@@ -44,7 +44,7 @@ std::unique_ptr<Plugin> Plugin::Create(std::filesystem::path aPath, PolyjuiceInf
 	}
 
 	auto p = std::make_unique<Plugin>();
-	p->QueryCallback = (decltype(p->QueryCallback))proc;
+	p->QueryCallback = (Plugin::TQuery)proc;
 	auto result = (p->QueryCallback)(apInfo, &p->m_info);
 	if (!result)
 	{

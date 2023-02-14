@@ -84,6 +84,7 @@ char* Hook_get_narrow_winmain_command_line()
 
 	Polyjuice::Get().LoadPlugins();
 	Polyjuice::Get().LoadMods();
+	Polyjuice::Get().DispatchPreInitialization();
 
 	spdlog::info("Pre-Initialization complete!");
 
