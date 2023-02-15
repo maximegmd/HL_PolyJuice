@@ -191,7 +191,7 @@ static void HookPlayerController_BeginPlay()
 static void HookPlayerController_EndPlay()
 {
 	static auto module = mem::module::main();
-	static auto pattern = mem::pattern("48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B B9 98 02 00 00 8B F2 48 8B D9 48 85 FF 74 78");
+	static auto pattern = mem::pattern("48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B B9 ? 02 00 00 8B F2 48 8B D9 48 85 FF 74 78");
 	mem::default_scanner scanner(pattern);
 
 	void* func = nullptr;
