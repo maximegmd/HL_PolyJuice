@@ -1,12 +1,13 @@
 #pragma once
 
-#include <sdk/Common.h>
 
 #include "UObject/NameTypes.h"
 #include "UObject/Class.h"
 #include "UObject/EnumProperty.h"
 #include "UObject/UObjectArray.h"
 #include "UObject/UnrealType.h"
+
+#include <sdk/Common.h>
 
 #include <iostream>
 #include <filesystem>
