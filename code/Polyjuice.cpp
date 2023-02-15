@@ -1,4 +1,5 @@
 #include "Polyjuice.h"
+#include "HogwartsSDK.h"
 
 #include "hooks/Engine.h"
 
@@ -10,6 +11,8 @@ void* GetExtension(uint32_t aId)
 Polyjuice::Polyjuice()
 	: m_log(m_paths)
 {
+	Hogwarts::Initialize();
+
 	InstallEngineHook();
 
 	m_info.MajorVersion = 0;
