@@ -21,10 +21,12 @@ enum ELevelTick
 
 using TStaticLoadObject = UObject*(*)(UClass* uclass, UObject* InOuter, const wchar_t* InName, const wchar_t* Filename, unsigned int LoadFlags, void* Sandbox, bool bAllowObjectReconciliation);
 using TAPlayerController_BeginPlay = void(*)(APlayerController*);
+using TAPlayerController_EndPlay = void(*)(APlayerController*, EEndPlayReason::Type Reason);
 using TAPlayerController_TickPlayer = void(*)(APlayerController*, float DeltaSeconds, ELevelTick TickType, struct FActorTickFunction* ThisTickFunction);
 using TAGameMode_InitGameState = void(*)(AGameMode*);
 
 static TAPlayerController_BeginPlay RealAPlayerController_BeginPlay = nullptr;
+static TAPlayerController_EndPlay RealAPlayerController_EndPlay = nullptr;
 static TAPlayerController_TickPlayer RealAPlayerController_TickPlayer = nullptr;
 static TAGameMode_InitGameState RealAGameMode_InitGameState = nullptr;
 static TStaticLoadObject RealStaticLoadObject = nullptr;
@@ -42,6 +44,13 @@ void APlayerController_BeginPlay(APlayerController* apThis)
 	RealAPlayerController_BeginPlay(apThis);
 
 	Polyjuice::Get().DispatchBeginPlay(apThis);
+}
+
+void APlayerController_EndPlay(APlayerController* apThis, EEndPlayReason::Type Reason)
+{
+	RealAPlayerController_EndPlay(apThis, Reason);
+
+	Polyjuice::Get().DispatchEndPlay(apThis);
 }
 
 void APlayerController_TickPlayer(APlayerController* apThis, float DeltaSeconds, ELevelTick TickType, struct FActorTickFunction* ThisTickFunction)
@@ -141,7 +150,7 @@ static void FindStaticLoad()
 
 }
 
-static void HookPlayerController_BeginPlay() 
+static void HookPlayerController_BeginPlay()
 {
 	static auto module = mem::module::main();
 	static auto pattern = mem::pattern("40 56 48 83 EC 40 48 89 7C 24 58 48 8B F1 E8");
@@ -151,14 +160,14 @@ static void HookPlayerController_BeginPlay()
 
 	module.enum_segments([&](mem::region range, mem::prot_flags prot) {
 		auto ptr = scanner.scan(range);
-		if (ptr)
-		{
-			func = ptr.as<void*>();
+	if (ptr)
+	{
+		func = ptr.as<void*>();
 
-			return true;
-		}
+		return true;
+	}
 
-		return false;
+	return false;
 		});
 
 	auto res = MH_CreateHook(func, APlayerController_BeginPlay, (void**)&RealAPlayerController_BeginPlay);
@@ -175,6 +184,42 @@ static void HookPlayerController_BeginPlay()
 	}
 
 	spdlog::info("Hooked APlayerController::BeginPlay");
+}
+
+static void HookPlayerController_EndPlay()
+{
+	static auto module = mem::module::main();
+	static auto pattern = mem::pattern("48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8B B9 98 02 00 00 8B F2 48 8B D9 48 85 FF 74 78");
+	mem::default_scanner scanner(pattern);
+
+	void* func = nullptr;
+
+	module.enum_segments([&](mem::region range, mem::prot_flags prot) {
+		auto ptr = scanner.scan(range);
+	if (ptr)
+	{
+		func = ptr.as<void*>();
+
+		return true;
+	}
+
+	return false;
+		});
+
+	auto res = MH_CreateHook(func, APlayerController_EndPlay, (void**)&RealAPlayerController_EndPlay);
+	if (res != MH_OK)
+	{
+		spdlog::error("Failed to hook APlayerController::EndPlay");
+		return;
+	}
+	res = MH_EnableHook(func);
+	if (res != MH_OK)
+	{
+		spdlog::error("Failed to enable hook APlayerController::EndPlay");
+		return;
+	}
+
+	spdlog::info("Hooked APlayerController::EndPlay");
 }
 
 static void HookAGameMode_InitGameState() 

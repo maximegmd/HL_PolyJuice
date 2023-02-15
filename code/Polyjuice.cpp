@@ -98,6 +98,12 @@ void Polyjuice::DispatchBeginPlay(APlayerController* apController)
 		p->BeginPlay(apController);
 }
 
+void Polyjuice::DispatchEndPlay(APlayerController* apController)
+{
+	for (auto& p : m_plugins)
+		p->EndPlay(apController);
+}
+
 void Polyjuice::DispatchTick(APlayerController* apController, float DeltaSeconds)
 {
 	for (auto& p : m_plugins)

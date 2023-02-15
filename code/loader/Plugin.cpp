@@ -18,6 +18,12 @@ void Plugin::BeginPlay(APlayerController* apController)
 		(m_info.OnBeginPlay)(apController);
 }
 
+void Plugin::EndPlay(APlayerController* apController)
+{
+	if (m_info.OnEndPlay)
+		(m_info.OnEndPlay)(apController);
+}
+
 void Plugin::Tick(APlayerController* apController, float DeltaSeconds)
 {
 	if (m_info.OnTick)

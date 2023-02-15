@@ -16,6 +16,7 @@ struct Polyjuice
 	void DispatchPreInitialization();
 	void DispatchPostInitialization();
 	void DispatchBeginPlay(class APlayerController* apController);
+	void DispatchEndPlay(class APlayerController* apController);
 	void DispatchTick(class APlayerController* apController, float DeltaSeconds);
 
 	void ProcessInitGameState();

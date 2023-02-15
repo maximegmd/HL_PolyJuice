@@ -11,13 +11,14 @@ struct Plugin
 
 		using TCallback = void(*)();
 		using TBeginPlay = void(*)(class APlayerController*);
+		using TEndPlay = void(*)(class APlayerController*);
 		using TTick = void(*)(class APlayerController*, float);
 
 		TCallback OnPreInitialize = nullptr;
 		TCallback OnPostInitialize = nullptr;
 		TBeginPlay OnBeginPlay = nullptr;
 		TTick OnTick = nullptr;
-		
+		TEndPlay OnEndPlay = nullptr;
 	};
 
 	struct PolyjuiceInfo
@@ -40,6 +41,7 @@ struct Plugin
 	void PreInit();
 	void PostInit();
 	void BeginPlay(class APlayerController* apController);
+	void EndPlay(class APlayerController* apController);
 	void Tick(class APlayerController* apController, float DeltaSeconds);
 
 	static std::unique_ptr<Plugin> Create(std::filesystem::path aPath, PolyjuiceInfo* apInfo);
