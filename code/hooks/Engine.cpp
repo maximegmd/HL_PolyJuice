@@ -79,6 +79,7 @@ static T_get_narrow_winmain_command_line Real_get_narrow_winmain_command_line = 
 static void HookAPlayerController_TickPlayer();
 static void HookAGameMode_InitGameState();
 static void HookPlayerController_BeginPlay();
+static void HookPlayerController_EndPlay();
 static void FindStaticLoad();
 
 char* Hook_get_narrow_winmain_command_line()
@@ -89,6 +90,7 @@ char* Hook_get_narrow_winmain_command_line()
 	FindStaticLoad();
 	HookAPlayerController_TickPlayer();
 	HookPlayerController_BeginPlay();
+	HookPlayerController_EndPlay();
 	HookAGameMode_InitGameState();
 
 	Polyjuice::Get().LoadPlugins();
