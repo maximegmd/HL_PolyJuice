@@ -264,7 +264,7 @@ static void HookAGameMode_InitGameState()
 static void HookAPlayerController_TickPlayer() 
 {
 	static auto module = mem::module::main();
-	static auto pattern = mem::pattern("40 53 55 57 48 81 EC A0 00 00 00 48 8B F9 44 0F");
+	static auto pattern = mem::pattern("40 55 57 48 81 EC A8 00 00 00 44 0F 29 5C 24 40");
 	mem::default_scanner scanner(pattern);
 
 	void* func = nullptr;
